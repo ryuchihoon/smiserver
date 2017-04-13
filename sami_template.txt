@@ -1,0 +1,28 @@
+<SAMI>
+<HEAD>
+<TITLE>{{title}}</TITLE>
+<SAMIParam>
+  Metrics {time:ms;}
+  Spec {MSFT:1.0;}
+</SAMIParam>
+<STYLE TYPE="text/css">
+<!--
+  P { font-family: Arial; font-weight: normal; color: white; background-color: transparent; text-align: center; }
+
+  .KOKRCC { name: Korean;  lang: ko-KR ; SAMIType: CC ; }
+  .ENUSCC { name: English; lang: en-US ; SAMIType: CC ; }
+-->
+</STYLE>
+</HEAD>
+
+<BODY>
+
+{% for phrase in plist %}
+<SYNC Start={{ phrase['time'] }}>
+  <P Class=KOKRCC >{{ phrase['kor'] }}</P>
+  <P Class=ENUSCC >{{ phrase['eng'] }}</P>
+</SYNC>
+{% endfor %}
+
+</BODY>
+</SAMI>
