@@ -1,14 +1,12 @@
 import os
 import sys
 from flask import Flask, request, redirect, url_for, flash, render_template, Response
-from werkzeug.utils import secure_filename
 from script2sami import mkSami
 
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = '/tmp/smiserver'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-app.secret_key = 'smiserver'
+app.config['MAX_CONTENT_LENGTH'] = 3 * 1024 * 1024
+app.secret_key = 'smiserver_secret'
 
 
 @app.route('/', methods=['GET'])
@@ -34,19 +32,12 @@ def upload_file():
         flash('오류: 파일을 선택하세요')
         return redirect(request.url)
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
         try:
-            sami = mkSami(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            sami = mkSami(file)
         except Exception as e:
-            flash('오류: 자막 생성 실패 \n'+e.message)
+            flash('오류: 자막 생성 실패 \n'+str(e))
             return redirect(request.url)
         
         return Response(sami, mimetype="application/smil", 
                         headers={"Content-Disposition":"attachment;filename=subtitle.smi"})
     return greating()
-
-#    result = mkSami(os.path.join(os.path.dirname(os.path.abspath(__file__)),
-#                    "script_sample.xml"))
-#    return result

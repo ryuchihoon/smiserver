@@ -4,8 +4,8 @@ import os
 import sys
 
 
-def mkSami(scriptPath):
-    vlist = parse(scriptPath).getroot().getiterator("data")
+def mkSami(script):
+    vlist = parse(script).getroot().getiterator("data")
     plist = [
                 {
                     "time":d.findtext("time"),
